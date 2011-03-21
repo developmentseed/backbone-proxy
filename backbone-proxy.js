@@ -23,7 +23,7 @@ module.exports = function(options) {
         }
     };
 
-    return function(method, model, success, error) {
+    var sync = function(method, model, success, error) {
         switch (method) {
         case 'read':
             var u = getUrl(model);
@@ -43,5 +43,7 @@ module.exports = function(options) {
             return error(method + ' not supported by backbone-proxy.');
         }
     };
+
+    return { sync: sync };
 };
 

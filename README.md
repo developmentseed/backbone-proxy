@@ -12,7 +12,7 @@ models to be backed by a REST JSON endpoint elsewhere.
 ### Usage
 
     var Backbone = require('backbone');
-    Backbone.sync = require('backbone-proxy')();
+    Backbone.sync = require('backbone-proxy')().sync;
 
     // Backbone.sync will now load models from the URL specified by `Model.url`
 
