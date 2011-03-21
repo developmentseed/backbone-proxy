@@ -1,1 +1,1 @@
-module.exports = require('./backbone-stash');
+module.exports = require('./backbone-proxy');

@@ -26,10 +26,10 @@ module.exports = function(options) {
     return function(method, model, success, error) {
         switch (method) {
         case 'read':
-            var url = getUrl(model);
-            (!url.parse(url).hostname)) && (url = options.hostname + url);
+            var u = getUrl(model);
+            (!url.parse(u).hostname) && (u = options.hostname + u);
 
-            (new get(url)).asString(function(err, str) {
+            (new get(u)).asString(function(err, str) {
                 if (err) {
                     return error(err);
                 } else {
