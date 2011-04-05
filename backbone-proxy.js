@@ -5,13 +5,17 @@
 // - `options.hostname` Optional. Hostname (and port) to use for any models
 //   whose `url` property/function does not contain a hostname. Should not
 //   include a trailing slash. Example: `http://www.twitter.com`.
+// - `options.cache` Time to retain models in memory cache in seconds. Pass 0
+//   to disable cache entirely. Defaults to 600 seconds (10 minutes).
 var get = require('node-get'),
     path = require('path'),
-    url = require('url');
+    url = require('url'),
+    cache = {};
 
 module.exports = function(options) {
     options = options || {};
     options.hostname = options.hostname || '';
+    options.cache = (options.cache === undefined) ? 600 : options.cache;
 
     // Helper function to get a URL from a Model or Collection as a property
     // or as a function.
@@ -27,14 +31,25 @@ module.exports = function(options) {
         switch (method) {
         case 'read':
             var u = getUrl(model);
+                time = parseInt((+ new Date()) / 1000);
             (!url.parse(u).hostname) && (u = options.hostname + u);
 
+            // Warmed cache.
+            if (cache[u] && (time - options.cache) < cache[u].time) {
+                return cache[u].status
+                    ? success(cache[u].data)
+                    : error(cache[u].data);
+            }
+            // Stale cache.
             (new get(u)).asString(function(err, str) {
-                if (err) {
-                    return error(err);
-                } else {
-                    return success(JSON.parse(str));
-                }
+                cache[u] = {
+                    status: !err,
+                    time: time,
+                    data: err ? err : JSON.parse(str)
+                };
+                return cache[u].status
+                    ? success(cache[u].data)
+                    : error(cache[u].data);
             });
             break;
         // @TODO: support Create/Update/Delete operations -- requires
