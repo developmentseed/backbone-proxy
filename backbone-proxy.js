@@ -7,7 +7,7 @@
 //   include a trailing slash. Example: `http://www.twitter.com`.
 // - `options.cache` Time to retain models in memory cache in seconds. Pass 0
 //   to disable cache entirely. Defaults to 600 seconds (10 minutes).
-var get = require('node-get'),
+var get = require('get'),
     path = require('path'),
     url = require('url'),
     cache = {};

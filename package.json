@@ -1,0 +1,11 @@
+{
+    "name": "backbone-proxy",
+    "version": "0.1.0",
+    "author": "Young Hahn",
+    "dependencies": {
+        "underscore": "1.1.x",
+        "get": "0.3.x"
+    },
+    "licenses": [{ "type": "BSD" }],
+    "main": "./backbone-proxy"
+}
